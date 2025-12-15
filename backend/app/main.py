@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
 from .storage import init_bucket
 from .routers import files, folders, stats
@@ -7,6 +8,14 @@ from .routers import files, folders, stats
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="DMS Backend")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 def startup_event():
