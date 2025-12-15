@@ -14,15 +14,40 @@ DMS 是一個功能完整的文件管理系統，結合了現代化的前端介�
 
 ### 1. 環境需求
 
+#### 方法一：Docker (推薦)
+- **Docker & Docker Compose**: 即可運行完整服務 (包含 Backend, Frontend, MinIO)。
+
+#### 方法二：手動開發
 - **Docker & Docker Compose**: 用於執行 MinIO 服務。
 - **Python 3.8+**: 用於執行後端服務。
 - **Node.js 18+**: 用於執行前端開發伺服器。
 
 ### 2. 啟動服務
 
+#### 方法一：使用 Docker (推薦)
+
+**一鍵啟動後端與資料庫 (Backend + MinIO)**
+```bash
+cd backend
+docker-compose up -d
+```
+> 後端 API: http://localhost:8000/docs
+> MinIO Console: http://localhost:9001 (admin/password)
+
+**啟動前端介面 (Frontend)**
+```bash
+cd frontend
+docker-compose up -d
+```
+> 前端頁面: http://localhost:3000
+
+---
+
+#### 方法二：手動開發部署
+
 建議依照以下順序啟動各項服務：
 
-#### 步驟一：啟動 MinIO (資料儲存)
+**步驟一：啟動 MinIO (資料儲存)**
 
 ```bash
 cd backend
@@ -30,7 +55,7 @@ docker-compose up -d
 ```
 > MinIO Console: http://localhost:9001 (帳號: admin / 密碼: password)
 
-#### 步驟二：啟動後端 API
+**步驟二：啟動後端 API**
 
 開啟一個新的終端機視窗：
 
@@ -49,9 +74,9 @@ python -m migrations.add_versioning --migrate
 # 啟動伺服器
 uvicorn app.main:app --reload
 ```
-> API 文件: http://localhost:8000/docs
+> API 文件: http://localhost:8000/docs/
 
-#### 步驟三：啟動前端介面
+**步驟三：啟動前端介面**
 
 開啟另一個新的終端機視窗：
 
