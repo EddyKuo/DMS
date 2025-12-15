@@ -1,0 +1,171 @@
+{
+    "common": {
+        "appName": "DMS",
+        "loading": "Loading...",
+        "error": "Error",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "confirm": "Confirm",
+        "deleteConfirmTitle": "Confirm Delete",
+        "deleteConfirmMessage": "Are you sure you want to delete \"{{name}}\"? This action cannot be undone.",
+        "deleteSuccess": "Deleted successfully",
+        "download": "Download",
+        "upload": "Upload",
+        "search": "Search",
+        "settings": "Settings",
+        "home": "Home",
+        "noResults": "No results found",
+        "recursiveDelete": "Delete all contents (files and subfolders)",
+        "folderNotEmpty": "This folder may contain files or subfolders."
+    },
+    "nav": {
+        "dashboard": "Dashboard",
+        "myFiles": "My Files",
+        "upload": "Upload",
+        "settings": "Settings"
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "totalFiles": "Total Files",
+        "storageUsed": "Storage Used",
+        "recentUploads": "Recent Uploads",
+        "categories": "Categories",
+        "categoryDistribution": "Category Distribution",
+        "storageOverview": "Storage Overview",
+        "files": "files",
+        "used": "Used",
+        "fetchError": "Failed to fetch dashboard stats"
+    },
+    "categories": {
+        "document": "Documents",
+        "image": "Images",
+        "video": "Videos",
+        "audio": "Audio",
+        "archive": "Archives",
+        "other": "Other"
+    },
+    "fileExplorer": {
+        "title": "File Explorer",
+        "name": "Name",
+        "size": "Size",
+        "date": "Date",
+        "failedToFetch": "Failed to fetch folder contents"
+    },
+    "upload": {
+        "title": "Upload Files",
+        "dragDrop": "Drag & Drop files here",
+        "orClick": "or click to browse",
+        "browseFiles": "Browse Files",
+        "supportedTypes": "Supported File Types",
+        "documents": "Documents: PDF, DOC, DOCX, TXT, XLS, XLSX, PPT, PPTX",
+        "images": "Images: JPG, JPEG, PNG, GIF, BMP, SVG, WEBP",
+        "archives": "Archives: ZIP, RAR, 7Z, TAR, GZ",
+        "uploading": "uploading",
+        "completed": "completed",
+        "pending": "pending",
+        "failed": "Failed",
+        "selectFolder": "Select target folder",
+        "rootFolder": "Root (Home)",
+        "createFolder": "Create Folder",
+        "newFolderName": "New folder name",
+        "folderCreated": "Folder created successfully",
+        "parentFolder": "Parent folder"
+    },
+    "settings": {
+        "title": "Settings",
+        "appearance": "Appearance",
+        "darkMode": "Dark Mode",
+        "themeNote": "Note: Theme switching is currently display-only. Full implementation requires theme context.",
+        "apiConfig": "API Configuration",
+        "backendApi": "Backend API",
+        "about": "About",
+        "version": "Version",
+        "techStack": "Technology Stack",
+        "language": "Language",
+        "selectLanguage": "Select Language"
+    },
+    "search": {
+        "title": "Search Results",
+        "query": "Query",
+        "category": "Category",
+        "tag": "Tag",
+        "foundFiles": "Found {{count}} file(s)",
+        "enterSearchTerm": "Enter a search term"
+    },
+    "contextMenu": {
+        "download": "Download",
+        "info": "Info",
+        "share": "Share",
+        "delete": "Delete",
+        "createFolder": "New Folder",
+        "versionHistory": "Version History",
+        "rename": "Rename"
+    },
+    "preview": {
+        "title": "File Preview",
+        "close": "Close",
+        "unsupported": "Preview not available for this file type"
+    },
+    "infoDrawer": {
+        "fileDetails": "File Details",
+        "filename": "Filename",
+        "type": "Type",
+        "size": "Size",
+        "uploadedAt": "Uploaded At",
+        "category": "Category",
+        "tags": "Tags",
+        "addTag": "Add tag...",
+        "noTags": "No tags",
+        "tagAdded": "Tag added successfully",
+        "tagDeleted": "Tag deleted successfully",
+        "versions": "Versions",
+        "currentVersion": "Current Version",
+        "totalVersions": "Total Versions",
+        "viewVersionHistory": "View Version History"
+    },
+    "versionHistory": {
+        "title": "Version History",
+        "version": "Version",
+        "uploadedAt": "Uploaded At",
+        "size": "Size",
+        "current": "Current",
+        "download": "Download",
+        "restore": "Restore",
+        "delete": "Delete",
+        "restoreConfirmTitle": "Confirm Restore",
+        "restoreConfirmMessage": "Are you sure you want to restore to version {{version}}?",
+        "deleteConfirmTitle": "Confirm Delete",
+        "deleteConfirmMessage": "Are you sure you want to delete version {{version}}?",
+        "cannotDeleteLastVersion": "Cannot delete the last version",
+        "restoreSuccess": "Successfully restored to version {{version}}",
+        "deleteSuccess": "Version {{version}} deleted successfully"
+    },
+    "share": {
+        "title": "Share File",
+        "expirationTime": "Expiration Time",
+        "linkValidFor": "Link valid for {{time}}",
+        "hours": "hours",
+        "days": "days",
+        "shareLink": "Share Link",
+        "expiresAt": "Expires at",
+        "generateLink": "Generate Link",
+        "generateFailed": "Failed to generate share link"
+    },
+    "rename": {
+        "title": "Rename",
+        "newName": "New Name",
+        "rename": "Rename",
+        "success": "Renamed successfully"
+    },
+    "emptyState": {
+        "folderTitle": "This folder is empty",
+        "folderDescription": "Drag and drop files here or click the button below to upload",
+        "uploadFiles": "Upload Files",
+        "searchTitle": "No results found",
+        "searchDescription": "Try a different search term or filter",
+        "uploadTitle": "Ready to upload",
+        "uploadDescription": "Drag and drop files here to start uploading",
+        "browseFiles": "Browse Files"
+    }
+}

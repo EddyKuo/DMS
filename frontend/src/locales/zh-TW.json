@@ -1,0 +1,171 @@
+{
+    "common": {
+        "appName": "DMS",
+        "loading": "載入中...",
+        "error": "錯誤",
+        "save": "儲存",
+        "cancel": "取消",
+        "delete": "刪除",
+        "confirm": "確認",
+        "deleteConfirmTitle": "確認刪除",
+        "deleteConfirmMessage": "確定要刪除「{{name}}」嗎？此操作無法復原。",
+        "deleteSuccess": "刪除成功",
+        "download": "下載",
+        "upload": "上傳",
+        "search": "搜尋",
+        "settings": "設定",
+        "home": "首頁",
+        "noResults": "找不到結果",
+        "recursiveDelete": "刪除所有內容（檔案及子資料夾）",
+        "folderNotEmpty": "此資料夾可能包含檔案或子資料夾。"
+    },
+    "nav": {
+        "dashboard": "儀表板",
+        "myFiles": "我的檔案",
+        "upload": "上傳",
+        "settings": "設定"
+    },
+    "dashboard": {
+        "title": "儀表板",
+        "totalFiles": "檔案總數",
+        "storageUsed": "已使用空間",
+        "recentUploads": "最近上傳",
+        "categories": "分類數",
+        "categoryDistribution": "分類分布",
+        "storageOverview": "儲存空間概覽",
+        "files": "檔案",
+        "used": "已使用",
+        "fetchError": "無法取得儀表板資料"
+    },
+    "categories": {
+        "document": "文件",
+        "image": "圖片",
+        "video": "影片",
+        "audio": "音訊",
+        "archive": "壓縮檔",
+        "other": "其他"
+    },
+    "fileExplorer": {
+        "title": "檔案瀏覽器",
+        "name": "名稱",
+        "size": "大小",
+        "date": "日期",
+        "failedToFetch": "無法取得資料夾內容"
+    },
+    "upload": {
+        "title": "上傳檔案",
+        "dragDrop": "拖放檔案至此處",
+        "orClick": "或點擊瀏覽",
+        "browseFiles": "瀏覽檔案",
+        "supportedTypes": "支援的檔案類型",
+        "documents": "文件：PDF, DOC, DOCX, TXT, XLS, XLSX, PPT, PPTX",
+        "images": "圖片：JPG, JPEG, PNG, GIF, BMP, SVG, WEBP",
+        "archives": "壓縮檔：ZIP, RAR, 7Z, TAR, GZ",
+        "uploading": "上傳中",
+        "completed": "已完成",
+        "pending": "等待中",
+        "failed": "失敗",
+        "selectFolder": "選擇目標資料夾",
+        "rootFolder": "根目錄（首頁）",
+        "createFolder": "建立資料夾",
+        "newFolderName": "新資料夾名稱",
+        "folderCreated": "資料夾建立成功",
+        "parentFolder": "父資料夾"
+    },
+    "settings": {
+        "title": "設定",
+        "appearance": "外觀",
+        "darkMode": "深色模式",
+        "themeNote": "注意：主題切換目前僅供顯示，完整實作需要主題上下文。",
+        "apiConfig": "API 設定",
+        "backendApi": "後端 API",
+        "about": "關於",
+        "version": "版本",
+        "techStack": "技術堆疊",
+        "language": "語言",
+        "selectLanguage": "選擇語言"
+    },
+    "search": {
+        "title": "搜尋結果",
+        "query": "查詢",
+        "category": "分類",
+        "tag": "標籤",
+        "foundFiles": "找到 {{count}} 個檔案",
+        "enterSearchTerm": "請輸入搜尋關鍵字"
+    },
+    "contextMenu": {
+        "download": "下載",
+        "info": "詳細資訊",
+        "share": "分享",
+        "delete": "刪除",
+        "createFolder": "新增資料夾",
+        "versionHistory": "版本歷程",
+        "rename": "重新命名"
+    },
+    "preview": {
+        "title": "檔案預覽",
+        "close": "關閉",
+        "unsupported": "此檔案類型無法預覽"
+    },
+    "infoDrawer": {
+        "fileDetails": "檔案詳情",
+        "filename": "檔案名稱",
+        "type": "類型",
+        "size": "大小",
+        "uploadedAt": "上傳時間",
+        "category": "分類",
+        "tags": "標籤",
+        "addTag": "新增標籤...",
+        "noTags": "無標籤",
+        "tagAdded": "標籤新增成功",
+        "tagDeleted": "標籤刪除成功",
+        "versions": "版本",
+        "currentVersion": "目前版本",
+        "totalVersions": "版本總數",
+        "viewVersionHistory": "檢視版本歷程"
+    },
+    "versionHistory": {
+        "title": "版本歷程",
+        "version": "版本",
+        "uploadedAt": "上傳時間",
+        "size": "大小",
+        "current": "目前",
+        "download": "下載",
+        "restore": "還原",
+        "delete": "刪除",
+        "restoreConfirmTitle": "確認還原",
+        "restoreConfirmMessage": "確定要還原到版本 {{version}} 嗎？",
+        "deleteConfirmTitle": "確認刪除",
+        "deleteConfirmMessage": "確定要刪除版本 {{version}} 嗎？",
+        "cannotDeleteLastVersion": "無法刪除最後一個版本",
+        "restoreSuccess": "已成功還原到版本 {{version}}",
+        "deleteSuccess": "版本 {{version}} 已成功刪除"
+    },
+    "share": {
+        "title": "分享檔案",
+        "expirationTime": "過期時間",
+        "linkValidFor": "連結有效期限：{{time}}",
+        "hours": "小時",
+        "days": "天",
+        "shareLink": "分享連結",
+        "expiresAt": "到期時間",
+        "generateLink": "產生連結",
+        "generateFailed": "產生分享連結失敗"
+    },
+    "rename": {
+        "title": "重新命名",
+        "newName": "新名稱",
+        "rename": "重新命名",
+        "success": "重新命名成功"
+    },
+    "emptyState": {
+        "folderTitle": "這個資料夾是空的",
+        "folderDescription": "拖放檔案到此處或點擊下方按鈕上傳",
+        "uploadFiles": "上傳檔案",
+        "searchTitle": "找不到結果",
+        "searchDescription": "請嘗試不同的關鍵字或篩選條件",
+        "uploadTitle": "準備上傳",
+        "uploadDescription": "拖放檔案到此處開始上傳",
+        "browseFiles": "瀏覽檔案"
+    }
+}
