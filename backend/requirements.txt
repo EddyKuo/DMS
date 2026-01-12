@@ -5,3 +5,9 @@ minio
 sqlalchemy
 requests
 gunicorn
+passlib[bcrypt]
+python-jose[cryptography]
+pytest
+httpx
+pytest-asyncio
+bcrypt==4.0.1

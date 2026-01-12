@@ -8,6 +8,12 @@ file_tags = Table('file_tags', Base.metadata,
     Column('tag_id', Integer, ForeignKey('tags.id'))
 )
 
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+
 class Tag(Base):
     __tablename__ = "tags"
     id = Column(Integer, primary_key=True, index=True)
@@ -84,4 +90,3 @@ class FileRecord(Base):
     @property
     def uploaded_at(self):
         return self.current_version.uploaded_at if self.current_version else self.created_at
-

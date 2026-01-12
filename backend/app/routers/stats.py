@@ -2,13 +2,14 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from ..database import get_db
-from ..models import FileRecord, FileVersion
+from ..models import FileRecord, FileVersion, User
 from ..schemas import SystemStats
+from ..auth import get_current_user
 
 router = APIRouter()
 
 @router.get("/stats", response_model=SystemStats)
-def get_system_stats(db: Session = Depends(get_db)):
+def get_system_stats(db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     total_files = db.query(FileRecord).count()
     
     # Query size from FileVersion table (size was moved there for versioning)
