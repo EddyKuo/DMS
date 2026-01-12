@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from .database import engine, Base
 from .storage import init_bucket
-from .routers import files, folders, stats
+from .routers import files, folders, stats, auth
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -25,6 +25,7 @@ def startup_event():
     except Exception as e:
         print(f"Error initializing MinIO bucket: {e}")
 
+app.include_router(auth.router)
 app.include_router(files.router)
 app.include_router(folders.router)
 app.include_router(stats.router)

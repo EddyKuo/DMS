@@ -1,14 +1,15 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from ..database import get_db
-from ..models import Folder, FileRecord
+from ..models import Folder, FileRecord, User
 from ..schemas import FolderCreate, FolderResponse, FolderContentsResponse
+from ..auth import get_current_user
 from typing import List
 
 router = APIRouter()
 
 @router.post("/folders", response_model=FolderResponse)
-def create_folder(folder: FolderCreate, db: Session = Depends(get_db)):
+def create_folder(folder: FolderCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     if folder.parent_id:
         parent = db.query(Folder).filter(Folder.id == folder.parent_id).first()
         if not parent:
@@ -21,14 +22,14 @@ def create_folder(folder: FolderCreate, db: Session = Depends(get_db)):
     return db_folder
 
 @router.get("/folders", response_model=List[FolderResponse])
-def list_folders(parent_id: int = None, db: Session = Depends(get_db)):
+def list_folders(parent_id: int = None, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     # List folders that are children of parent_id (or root if None)
     filter_spec = Folder.parent_id == parent_id if parent_id is not None else Folder.parent_id.is_(None)
     folders = db.query(Folder).filter(filter_spec).all()
     return folders
 
 @router.get("/folders/{folder_id}", response_model=FolderContentsResponse)
-def get_folder_contents(folder_id: int, db: Session = Depends(get_db)):
+def get_folder_contents(folder_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     if folder_id == 0:
         # Root Folder
         db_folder = Folder(id=0, name="Root", parent_id=None) # Virtual object
@@ -78,7 +79,7 @@ def delete_folder_contents(folder_id: int, db: Session):
         db.delete(subfolder)
 
 @router.delete("/folders/{folder_id}")
-def delete_folder(folder_id: int, recursive: bool = False, db: Session = Depends(get_db)):
+def delete_folder(folder_id: int, recursive: bool = False, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     db_folder = db.query(Folder).filter(Folder.id == folder_id).first()
     if not db_folder:
         raise HTTPException(status_code=404, detail="Folder not found")

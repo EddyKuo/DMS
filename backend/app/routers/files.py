@@ -2,11 +2,13 @@ from fastapi import APIRouter, UploadFile, File, Depends, HTTPException, Form
 from fastapi.responses import StreamingResponse
 from typing import List
 from sqlalchemy.orm import Session
+from sqlalchemy import or_
 from ..database import get_db
-from ..models import FileRecord, FileVersion, Tag
+from ..models import FileRecord, FileVersion, Tag, User
 from ..storage import upload_file_to_minio, download_file_from_minio, BUCKET_NAME
 from ..schemas import FileUpdate, FileResponse, TagCreate, ShareResponse, FileVersionResponse
 from ..utils import calculate_sha1
+from ..auth import get_current_user
 from datetime import datetime
 import uuid
 import io
@@ -31,7 +33,7 @@ def build_file_response(db_file: FileRecord) -> dict:
 
 
 @router.post("/upload", response_model=FileResponse)
-def upload_file(file: UploadFile = File(...), folder_id: int = Form(None), db: Session = Depends(get_db)):
+def upload_file(file: UploadFile = File(...), folder_id: int = Form(None), db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     # Read file content
     content = file.file.read()
     size = len(content)
@@ -144,7 +146,7 @@ def upload_file(file: UploadFile = File(...), folder_id: int = Form(None), db: S
 
 
 @router.get("/download/{file_id}")
-def download_file(file_id: int, db: Session = Depends(get_db)):
+def download_file(file_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     db_file = db.query(FileRecord).filter(FileRecord.id == file_id).first()
     if not db_file:
         raise HTTPException(status_code=404, detail="File not found")
@@ -166,13 +168,13 @@ def download_file(file_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/history", response_model=List[FileResponse])
-def get_upload_history(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_upload_history(skip: int = 0, limit: int = 100, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     files = db.query(FileRecord).order_by(FileRecord.created_at.desc()).offset(skip).limit(limit).all()
     return [build_file_response(f) for f in files]
 
 
 @router.delete("/files/{file_id}")
-def delete_file(file_id: int, db: Session = Depends(get_db)):
+def delete_file(file_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     db_file = db.query(FileRecord).filter(FileRecord.id == file_id).first()
     if not db_file:
         raise HTTPException(status_code=404, detail="File not found")
@@ -192,7 +194,7 @@ def delete_file(file_id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/files/{file_id}", response_model=FileResponse)
-def update_file_metadata(file_id: int, file_update: FileUpdate, db: Session = Depends(get_db)):
+def update_file_metadata(file_id: int, file_update: FileUpdate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     db_file = db.query(FileRecord).filter(FileRecord.id == file_id).first()
     if not db_file:
         raise HTTPException(status_code=404, detail="File not found")
@@ -208,7 +210,7 @@ def update_file_metadata(file_id: int, file_update: FileUpdate, db: Session = De
 
 
 @router.get("/files/{file_id}/info", response_model=FileResponse)
-def get_file_info(file_id: int, db: Session = Depends(get_db)):
+def get_file_info(file_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     db_file = db.query(FileRecord).filter(FileRecord.id == file_id).first()
     if not db_file:
         raise HTTPException(status_code=404, detail="File not found")
@@ -218,7 +220,7 @@ def get_file_info(file_id: int, db: Session = Depends(get_db)):
 # ========== 版本管理 API ==========
 
 @router.get("/files/{file_id}/versions", response_model=List[FileVersionResponse])
-def list_versions(file_id: int, db: Session = Depends(get_db)):
+def list_versions(file_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """列出檔案的所有版本"""
     db_file = db.query(FileRecord).filter(FileRecord.id == file_id).first()
     if not db_file:
@@ -228,7 +230,7 @@ def list_versions(file_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/files/{file_id}/versions/{version_id}/download")
-def download_version(file_id: int, version_id: int, db: Session = Depends(get_db)):
+def download_version(file_id: int, version_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """下載特定版本"""
     version = db.query(FileVersion).filter(
         FileVersion.id == version_id,
@@ -252,7 +254,7 @@ def download_version(file_id: int, version_id: int, db: Session = Depends(get_db
 
 
 @router.delete("/files/{file_id}/versions/{version_id}")
-def delete_version(file_id: int, version_id: int, db: Session = Depends(get_db)):
+def delete_version(file_id: int, version_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """刪除特定版本 (不可刪除最後一個版本)"""
     db_file = db.query(FileRecord).filter(FileRecord.id == file_id).first()
     if not db_file:
@@ -290,7 +292,7 @@ def delete_version(file_id: int, version_id: int, db: Session = Depends(get_db))
 
 
 @router.put("/files/{file_id}/versions/{version_id}/restore", response_model=FileResponse)
-def restore_version(file_id: int, version_id: int, db: Session = Depends(get_db)):
+def restore_version(file_id: int, version_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     """還原到特定版本 (將 current_version 切換到該版本)"""
     db_file = db.query(FileRecord).filter(FileRecord.id == file_id).first()
     if not db_file:
@@ -314,25 +316,34 @@ def restore_version(file_id: int, version_id: int, db: Session = Depends(get_db)
 # ========== 現有 API ==========
 
 @router.get("/search", response_model=List[FileResponse])
-def search_files(q: str = None, category: str = None, tag: str = None, start_date: datetime = None, end_date: datetime = None, db: Session = Depends(get_db)):
+def search_files(q: str = None, category: str = None, tag: str = None, start_date: datetime = None, end_date: datetime = None, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     query = db.query(FileRecord)
     if q:
-        query = query.filter(FileRecord.filename.contains(q))
+        # Case insensitive search on filename
+        # Also search in Tags if q is provided (advanced search)
+        query = query.outerjoin(FileRecord.tags).filter(
+            or_(
+                FileRecord.filename.ilike(f"%{q}%"),
+                Tag.name.ilike(f"%{q}%")
+            )
+        )
     if category:
         query = query.filter(FileRecord.category == category)
     if tag:
+        # Exact match for tag filter
         query = query.join(FileRecord.tags).filter(Tag.name == tag)
     if start_date:
         query = query.filter(FileRecord.created_at >= start_date)
     if end_date:
         query = query.filter(FileRecord.created_at <= end_date)
     
-    results = query.all()
+    # Distinct because join might return duplicates
+    results = query.distinct().all()
     return [build_file_response(f) for f in results]
 
 
 @router.post("/files/{file_id}/tags", response_model=FileResponse)
-def add_tag(file_id: int, tag: TagCreate, db: Session = Depends(get_db)):
+def add_tag(file_id: int, tag: TagCreate, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     db_file = db.query(FileRecord).filter(FileRecord.id == file_id).first()
     if not db_file:
         raise HTTPException(status_code=404, detail="File not found")
@@ -353,7 +364,7 @@ def add_tag(file_id: int, tag: TagCreate, db: Session = Depends(get_db)):
 
 
 @router.delete("/files/{file_id}/tags/{tag_name}")
-def remove_tag(file_id: int, tag_name: str, db: Session = Depends(get_db)):
+def remove_tag(file_id: int, tag_name: str, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     db_file = db.query(FileRecord).filter(FileRecord.id == file_id).first()
     if not db_file:
         raise HTTPException(status_code=404, detail="File not found")
@@ -367,7 +378,7 @@ def remove_tag(file_id: int, tag_name: str, db: Session = Depends(get_db)):
 
 
 @router.get("/files/{file_id}/share", response_model=ShareResponse)
-def share_file(file_id: int, hours: int = 1, db: Session = Depends(get_db)):
+def share_file(file_id: int, hours: int = 1, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     db_file = db.query(FileRecord).filter(FileRecord.id == file_id).first()
     if not db_file:
         raise HTTPException(status_code=404, detail="File not found")
